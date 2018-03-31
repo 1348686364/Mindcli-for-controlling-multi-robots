@@ -1,7 +1,7 @@
 # Mindcli-for-controlling-multi-robots
 
 ## Introduction
-This code is for controlling multi-robots by a mindcli in a PC or sever. It has changed  a small of the open source mindcli by Vincross.
+This code is for controlling multi-robots by a mindcli in PC or sever. It's basis on the open source mindcli by Vincross. And it's for [HEXA](https://www.vincross.com) only.
 
 ## Usage
 The Usage of controlling multi robots is:
