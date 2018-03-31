@@ -34,5 +34,5 @@ The changes I made in the mindcli are as follows:
 4.Change the functions in 'mindcli.go': add 'mindcli.AllocatePort(robotIp)' in function RunSkill(), and change the function 'NewMindCli()'
 
 ##Others
-There is still some bugs in my program, all suggestions are welcome. Lets make it better!
+There is still some bugs in my program, all suggestions are welcome
 

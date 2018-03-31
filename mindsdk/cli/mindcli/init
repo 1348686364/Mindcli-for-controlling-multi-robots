@@ -1,0 +1,5 @@
+#！/bin/bash
+
+sudo su
+cd ~/
+rm .mindport.json
