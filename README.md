@@ -1,14 +1,14 @@
 # Mindcli-for-controlling-multi-robots
 
-##Introduce
+## Introduce
 This is for controlling multi-robots by a mindcli in a PC or sever. It has changed  a small part of the code  basis on the open source mindcli by Vincross.
 
-##Usage
+## Usage
 The Usage of controlling multi robots is:
-'$ sudo mind group <OPTION> <ROBOT/GROUP NAME> <ROBOT/GROUP NAME>'
+' $ sudo mind group OPTION ROBOT/GROUP NAME ROBOT/GROUP NAME '
 (PS: 'sudo' is essential, otherwise the opreations will not be saved. When use '$ mind run', you should make sure 'cd' to the dir which has a 'skill.mpk' file.)
 
-###OPTION:
+### OPTION:
 The options and their means in command is:
 	'addr'	: add robot into group (eg. '$ sudo mind group addr HEXA ALL' means add robot HEXA into group ALL.
 
@@ -26,13 +26,13 @@ The options and their means in command is:
 
 	'run'	:run skill in a group with install (eg. '$ sudo mind group runn ALL' means run skill in group ALL with install.
 
-##Changes I made
+## Changes I made
 The changes I made in the mindcli are as follows:
 1.Add file 'group.go' in package 'mindcli' to support the command .
 2.Add file 'portconfig.go' in package 'mindcli' to manage the allocated ports, the infomation of ports is saved in 'homeDir()/.mindport.json'.
 3.Change the strut 'MindCli' in 'mindcli.go' and strut 'UserConfig' in 'userconfig.go' basis on new strut 'Group' and 'PortConfig'.
 4.Change the functions in 'mindcli.go': add 'mindcli.AllocatePort(robotIp)' in function RunSkill(), and change the function 'NewMindCli()'
 
-##Others
+## Others
 There is still some bugs in my program, all suggestions are welcome. Lets make it better!
 
