@@ -46,17 +46,20 @@ def GetServeRemotePort(name):
 def init():
     browser = webdriver.Chrome()
     browser.set_window_size(0,0)
+    browser.implicitly_wait(3)
     return browser
 
 def ClickAll(button_id,browser):
     for port_dict in GetPortsInfo():
         url = "localhost:"+str(port_dict.get("ServeRemotePort"))
         browser.get(url)
+        browser.implicitly_wait(3)
         browser.find_element_by_id(button_id).click()
 
 def ClickSignle(Robotname,button_id,browser):
     url = "localhost:"+str(GetServeRemotePort(Robotname))
     browser.get(url)
+    browser.implicitly_wait(3)
     browser.find_element_by_id(button_id).click()
 
 def exit(browser):
