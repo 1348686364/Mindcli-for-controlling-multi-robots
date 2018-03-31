@@ -3,7 +3,7 @@ import easygui as g
 import sys
 import json
 import os.path
-from splinter import Browser
+# from splinter import Browser
 from selenium import webdriver
 
 MINDPORT_FILE_NAME = '/home/zxt/.mindport.json'
