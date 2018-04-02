@@ -8,41 +8,29 @@ import (
 	"time"
 )
 
-func (mindcli *MindCli) AllocatePort(robotIP string) {
-	//run skill in this robot on a avaliable port
-	robotsport := mindcli.portConfig.Robotsport
-	var robotport Robotport
-	robotport.RobotIp = robotIP
-	flag1 := 0
-	flag2 := 0
-	for flag1 != 1 || flag2 != 1 {
-		if !IsUDPPortAvailable(mindcli.config.ServeMPKPort) || !IsTCPPortAvailable(mindcli.config.ServeMPKPort) {
-			//fmt.Printf("ServeMPKPort %d already in use\n we allocate it as port", mindcli.config.ServeMPKPort)
-			mindcli.config.ServeMPKPort += 1
-		} else {
-			robotport.ServeMPKPort = mindcli.config.ServeMPKPort
-			fmt.Printf("ServeMPKPort of %s is: %d \n", robotIP, robotport.ServeMPKPort)
-			flag1 = 1
-		}
-		if !IsUDPPortAvailable(mindcli.config.ServeRemotePort) || !IsTCPPortAvailable(mindcli.config.ServeRemotePort) {
-			//fmt.Printf("ServeRemotePort %d already in use\n we allocate it as port", mindcli.config.ServeRemotePort)
-			mindcli.config.ServeRemotePort += 1
-		} else {
-			robotport.ServeRemotePort = mindcli.config.ServeRemotePort
-			fmt.Printf("ServeRemotePort of %s is: %d \n", robotIP, robotport.ServeRemotePort)
-			flag2 = 1
-		}
-	}
-	for i := 0; i < len(mindcli.portConfig.Robotsport); i++ {
-		if mindcli.portConfig.Robotsport[i].RobotIp == robotport.RobotIp {
-			mindcli.portConfig.Robotsport[i] = robotport
-			flag1 = 0
-		}
-	}
-	if flag1 == 1 {
-		mindcli.portConfig.Robotsport = append(robotsport, robotport)
+func (mindcli *MindCli) AllocatePort() {
+	//AllocatePort before running
+	MPKPort := mindcli.config.ServeMPKPort
+	RemotePort := mindcli.config.ServeRemotePort
+	for i := 0; i < len(mindcli.userConfig.Robots); i++ {
+		mindcli.portConfig.Robotsport[i].RobotIp = mindcli.userConfig.Robots[i].IP
+		mindcli.portConfig.Robotsport[i].ServeMPKPort = MPKPort + i
+		mindcli.portConfig.Robotsport[i].ServeRemotePort = RemotePort + i
+		println("Robot with ip address %s: ServeMPKPort = %d ; ServeRemotePort = %d", mindcli.portConfig.Robotsport[i].RobotIp, mindcli.portConfig.Robotsport[i].ServeMPKPort, mindcli.portConfig.Robotsport[i].ServeRemotePort)
 	}
 	mindcli.portConfig.Write()
+}
+
+func (mindcli *MindCli) ChangePort(robotIP string) error {
+	//AChange Port before running a robot
+	for _, robotport := range mindcli.portConfig.Robotsport {
+		if robotport.RobotIp == robotIP {
+			mindcli.config.ServeMPKPort = robotport.ServeMPKPort
+			mindcli.config.ServeRemotePort = robotport.ServeRemotePort
+			return nil
+		}
+	}
+	return errors.New("Cannot find robot with that ip address!")
 }
 
 //group manger:AddRobotToGroup
@@ -195,7 +183,6 @@ func (mindcli *MindCli) execrun(robotIP string, noInstall bool) *exec.Cmd {
 	if err != nil {
 		fmt.Println(err)
 	}
-	// cmd.Wait()
 	return cmd
 }
 
