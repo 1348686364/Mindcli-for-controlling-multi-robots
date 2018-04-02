@@ -29,6 +29,7 @@ func NewScanCommand(cli *mindcli.MindCli) *cobra.Command {
 			for _, robot := range robots {
 				fmt.Printf("%s %s\n", robot.IP, robot.Name)
 			}
+			cli.AllocatePort()
 		},
 	}
 	cmd.Flags().Int("waitDuration", 3, "Time to wait for response from robot")
