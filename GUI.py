@@ -5,6 +5,7 @@ import json
 import os.path
 from selenium import webdriver
 import sys
+import time
 
 reload(sys)
 sys.setdefaultencoding('utf8')
@@ -50,27 +51,33 @@ def GetServeRemotePort(name):
 def init():
     browser = webdriver.Chrome()
     browser.set_window_size(0,0)
+    port_dicts = GetPortsInfo()
+    urls =[]
+    # for port_dict in port_dicts:
+    #     url = 'localhost:'+str(port_dict.get("ServeRemotePort"))
+    #     urls.append(url)
+    urls.append('https://www.baidu.com')
+    urls.append('https://www.baidu.com')
+    urls.append('https://www.baidu.com')
+    OpenNewSessions(browser,urls)
+    print urls
     return browser
 
 def OpenNewSessions(browser,urls):
     for url in urls:
-        js='window.open(\"'+url+'\");'
-        browser.execute_script(js)
+        browser.execute_script('window.open(\"' + url + '\");')
+        browser.implicitly_wait(30)
 
 def ClickAll(button_id,browser):
-    port_dicts = GetPortsInfo()
-    urls =[]
-    for port_dict in port_dicts:
-        url = 'localhost:'+str(port_dict.get("ServeRemotePort"))
-        urls.append(url)
-    OpenNewSessions(browser,urls)
     for handle in browser.window_handles:
         browser.switch_to_window(handle)
-        browser.find_element_by_id(button_id).click()
+        # browser.find_element_by_id(button_id).click()
 
 def ClickSignle(Robotname,button_id,browser):
     url = "localhost:"+str(GetServeRemotePort(Robotname))
+    browser.switch_to_window(browser.window_handles[0])
     browser.get(url)
+    browser.implicitly_wait(30)
     browser.find_element_by_id(button_id).click()
 
 def exit(browser):
