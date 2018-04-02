@@ -169,7 +169,7 @@ func (mindcli *MindCli) RunSkill(noInstall bool, robotIp string, args ...string)
 		fmt.Println("The IP address you just typed does NOT meet the standard ipv4 format.")
 		return
 	}
-	mindcli.AllocatePort(robotIp)
+	mindcli.ChangePort(robotIp)
 	xParams = append(xParams,
 		"skill.mpk",
 		fmt.Sprintf("http://%s:%d", ip.String(), mindcli.config.ServeMPKPort),
