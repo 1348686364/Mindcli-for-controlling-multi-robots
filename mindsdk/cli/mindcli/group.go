@@ -222,7 +222,8 @@ func (mindcli *MindCli) GroupRun(groupname string) error {
 }
 
 func (mindcli *MindCli) GroupRun_base(groupname string, noInstall bool) error {
-	exec.Command("./init")
+	exec.Command("cd")
+	exec.Command("rm", ".mindport.json")
 	var flag int
 	flag = 0
 	var robot Robot
