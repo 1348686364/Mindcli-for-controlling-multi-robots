@@ -4,6 +4,10 @@ import sys
 import json
 import os.path
 from selenium import webdriver
+import sys
+
+reload(sys)
+sys.setdefaultencoding('utf8')
 
 MINDPORT_FILE_NAME = '/home/zxt/.mindport.json'
 MIND_FILE_NAME = '/home/zxt/.mind.json'
@@ -42,40 +46,39 @@ def GetServeRemotePort(name):
 
 
 # use shell to reach these function
-def OpenNewBrowser(browsers):
-    browser = webdriver.Chrome()
-    browser.set_window_size(0,0)
-    browsers.append(browser)
-    return browsers
 
 def init():
-    browsers = []
-    port_dicts = GetPortsInfo()
-    for i in range(port_dicts):
-        browsers = OpenNewBrowser(browsers)
-    return browsers
+    browser = webdriver.Chrome()
+    browser.set_window_size(0,0)
+    return browser
 
-def ClickAll(button_id,browsers):
+def OpenNewSessions(browser,urls):
+    for url in urls:
+        js='window.open(\"'+url+'\");'
+        browser.execute_script(js)
+
+def ClickAll(button_id,browser):
     port_dicts = GetPortsInfo()
-    for i in range(port_dicts):
-        url = "localhost:"+str(port_dicts[i].get("ServeRemotePort"))
-        browsers[i].get(url)
-        browsers[i].find_element_by_id(button_id).click()
+    urls =[]
+    for port_dict in port_dicts:
+        url = 'localhost:'+str(port_dict.get("ServeRemotePort"))
+        urls.append(url)
+    OpenNewSessions(browser,urls)
+    for handle in browser.window_handles:
+        browser.switch_to_window(handle)
+        browser.find_element_by_id(button_id).click()
 
 def ClickSignle(Robotname,button_id,browser):
     url = "localhost:"+str(GetServeRemotePort(Robotname))
     browser.get(url)
-    time.sleep(3)
     browser.find_element_by_id(button_id).click()
-    time.sleep(3)
 
-def exit(browsers):
-    for browser in browsers:
+def exit(browser):
         browser.quit()
 
 # design the gui for testing
 def gui():
-    browsers = init()
+    browser = init()
     #welcom page
     g.msgbox("welcom to the group HEXAController!")
     #information in Index page
@@ -98,22 +101,22 @@ def gui():
         # index page
         IndexChoice = g.buttonbox(IndexMsg, IndexTitle, IndexItem )
         if IndexChoice == "start all":
-            ClickAll("start",browsers)
+            ClickAll("start",browser)
         elif IndexChoice == "stop all":
-            ClickAll("stop",browsers)
+            ClickAll("stop",browser)
         elif IndexChoice == "single control":
             # new control page
             Robotname = g.choicebox(SingleControlMsg, SingleControlTitle, SingleControlChoicesItem )
             while 1:
                 SignleChioce = g.buttonbox(SingleControlMsg, SingleControlTitle + Robotname, SingleControlItem)
                 if SignleChioce == "start":
-                    ClickSignle(Robotname,"start",browsers[0])
+                    ClickSignle(Robotname,"start",browser)
                 elif SignleChioce == "stop":
-                    ClickSignle(Robotname,"stop",browsers[0])
+                    ClickSignle(Robotname,"stop",browser)
                 elif SignleChioce == "exit":
                     break
         elif IndexChoice == "exit":
-            exit(browsers)
+            exit(browser)
             break
 
 gui()
