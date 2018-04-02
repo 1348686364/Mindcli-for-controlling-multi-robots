@@ -53,14 +53,10 @@ def init():
     browser.set_window_size(0,0)
     port_dicts = GetPortsInfo()
     urls =[]
-    # for port_dict in port_dicts:
-    #     url = 'localhost:'+str(port_dict.get("ServeRemotePort"))
-    #     urls.append(url)
-    urls.append('https://www.baidu.com')
-    urls.append('https://www.baidu.com')
-    urls.append('https://www.baidu.com')
+    for port_dict in port_dicts:
+        url = 'localhost:'+str(port_dict.get("ServeRemotePort"))
+        urls.append(url)
     OpenNewSessions(browser,urls)
-    print urls
     return browser
 
 def OpenNewSessions(browser,urls):
@@ -71,7 +67,8 @@ def OpenNewSessions(browser,urls):
 def ClickAll(button_id,browser):
     for handle in browser.window_handles:
         browser.switch_to_window(handle)
-        # browser.find_element_by_id(button_id).click()
+        browser.refresh()
+        browser.find_element_by_id(button_id).click()
 
 def ClickSignle(Robotname,button_id,browser):
     url = "localhost:"+str(GetServeRemotePort(Robotname))
