@@ -1,0 +1,32 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "40vJyUB4ezQSn/NSadsKEOrudMc=",
+			"path": "github.com/inconshreveable/mousetrap",
+			"revision": ""
+		},
+		{
+			"checksumSHA1": "fUj88MYwrfU8xFWu+BPWpBXm8V4=",
+			"path": "github.com/spf13/cobra",
+			"revision": ""
+		},
+		{
+			"checksumSHA1": "5KvHyB1CImtwZT3fwNkNUlc8R0k=",
+			"path": "github.com/spf13/pflag",
+			"revision": ""
+		},
+		{
+			"checksumSHA1": "kPWfbMDVQAhlpT6M1Av1M/o2N+Y=",
+			"path": "mindsdk/cli/cmd",
+			"revision": ""
+		},
+		{
+			"checksumSHA1": "A4r920/XvrqAmOxVH3NjNGKwyG8=",
+			"path": "mindsdk/cli/mindcli",
+			"revision": ""
+		}
+	],
+	"rootPath": "mind"
+}

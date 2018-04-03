@@ -61,13 +61,13 @@ def init():
 
 def OpenNewSessions(browser,urls):
     for url in urls:
-        browser.execute_script('window.open(\"' + url + '\");')
+        browser.execute_script('window.open("http:' + url + '");')
         browser.implicitly_wait(30)
 
 def ClickAll(button_id,browser):
-    for handle in browser.window_handles:
-        browser.switch_to_window(handle)
-        browser.refresh()
+    # since the first handle is not a url we create, we overlap it
+    for i in range(len(browser.window_handles) - 1):
+        browser.switch_to_window(browser.window_handles[i+1])
         browser.find_element_by_id(button_id).click()
 
 def ClickSignle(Robotname,button_id,browser):
@@ -76,6 +76,7 @@ def ClickSignle(Robotname,button_id,browser):
     browser.get(url)
     browser.implicitly_wait(30)
     browser.find_element_by_id(button_id).click()
+    browser.get("https://www.baidu.com")
 
 def exit(browser):
         browser.quit()
@@ -111,7 +112,10 @@ def gui():
         elif IndexChoice == "single control":
             # new control page
             Robotname = g.choicebox(SingleControlMsg, SingleControlTitle, SingleControlChoicesItem )
-            while 1:
+            IFGoAhead = 0
+            if bool(Robotname):
+                IFGoAhead = 1
+            while IFGoAhead:
                 SignleChioce = g.buttonbox(SingleControlMsg, SingleControlTitle + Robotname, SingleControlItem)
                 if SignleChioce == "start":
                     ClickSignle(Robotname,"start",browser)
