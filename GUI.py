@@ -57,7 +57,8 @@ def init():
         url = 'localhost:'+str(port_dict.get("ServeRemotePort"))
         urls.append(url)
     OpenNewSessions(browser,urls)
-    return browser
+    # time.sleep(5)
+    return browser,urls
 
 def OpenNewSessions(browser,urls):
     for url in urls:
@@ -67,23 +68,24 @@ def OpenNewSessions(browser,urls):
 def ClickAll(button_id,browser):
     # since the first handle is not a url we create, we overlap it
     for i in range(len(browser.window_handles) - 1):
-        browser.switch_to_window(browser.window_handles[i+1])
-        browser.find_element_by_id(button_id).click()
+            browser.switch_to_window(browser.window_handles[i+1])
+            # if bool(browser.find_element_by_id(button_id)):
+            browser.find_element_by_id(button_id).click()
 
-def ClickSignle(Robotname,button_id,browser):
-    url = "localhost:"+str(GetServeRemotePort(Robotname))
-    browser.switch_to_window(browser.window_handles[0])
-    browser.get(url)
-    browser.implicitly_wait(30)
+def ClickSignle(Robotname,button_id,browser,urls):
+    url = 'localhost:'+ str(GetServeRemotePort(Robotname))
+    browser.switch_to_window(browser.window_handles[urls.index(url)+1])
+    # if bool(browser.find_element_by_id(button_id)):
     browser.find_element_by_id(button_id).click()
-    browser.get("https://www.baidu.com")
+
+
 
 def exit(browser):
         browser.quit()
 
 # design the gui for testing
 def gui():
-    browser = init()
+    browser,urls = init()
     #welcom page
     g.msgbox("welcom to the group HEXAController!")
     #information in Index page
@@ -118,13 +120,12 @@ def gui():
             while IFGoAhead:
                 SignleChioce = g.buttonbox(SingleControlMsg, SingleControlTitle + Robotname, SingleControlItem)
                 if SignleChioce == "start":
-                    ClickSignle(Robotname,"start",browser)
+                    ClickSignle(Robotname,"start",browser,urls)
                 elif SignleChioce == "stop":
-                    ClickSignle(Robotname,"stop",browser)
+                    ClickSignle(Robotname,"stop",browser,urls)
                 elif SignleChioce == "exit":
                     break
         elif IndexChoice == "exit":
-            exit(browser)
             break
 
 gui()
